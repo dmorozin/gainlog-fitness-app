@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  workout-service:
+    build:
+      context: .
+      dockerfile: workout-service/Dockerfile
+    ports:
+      - "${WORKOUT_SERVICE_PORT}:8081"
+    networks:
+      - gainlog-network
+
+  api-gateway:
+    build:
+      context: .
+      dockerfile: api-gateway/Dockerfile
+    ports:
+      - "${API_GATEWAY_PORT}:8080"
+    depends_on:
+      - workout-service
+    networks:
+      - gainlog-network
+
+networks:
+  gainlog-network:
+    driver: bridge
