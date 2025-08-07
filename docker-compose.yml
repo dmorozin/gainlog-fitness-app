@@ -1,10 +1,33 @@
 version: '3.8'
 
 services:
+  workout-db:
+    image: postgres:latest
+    container_name: workout-db
+    environment:
+      POSTGRES_DB: ${WORKOUT_POSTGRES_DB}
+      POSTGRES_USER: ${WORKOUT_POSTGRES_USER}
+      POSTGRES_PASSWORD: ${WORKOUT_POSTGRES_PASSWORD}
+    ports:
+      - "5001:5432"
+    volumes:
+      - workout-db-data:/var/lib/postgresql/data
+    networks:
+      - gainlog-network
+
   workout-service:
     build:
       context: .
       dockerfile: workout-service/Dockerfile
+    depends_on:
+      - workout-db
+    environment:
+      SPRING_DATASOURCE_URL: ${WORKOUT_POSTGRES_DB_URL}
+      SPRING_DATASOURCE_USERNAME: ${WORKOUT_POSTGRES_USER}
+      SPRING_DATASOURCE_PASSWORD: ${WORKOUT_POSTGRES_PASSWORD}
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_SHOW_SQL: "true"
+      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.PostgreSQLDialect
     ports:
       - "${WORKOUT_SERVICE_PORT}:8081"
     networks:
@@ -24,3 +47,6 @@ services:
 networks:
   gainlog-network:
     driver: bridge
+
+volumes:
+  workout-db-data:
