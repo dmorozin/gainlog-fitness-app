@@ -1,0 +1,11 @@
+### POST request to create patient
+POST http://localhost:8080/workouts
+Content-Type: application/json
+
+{
+  "name": "upper lower",
+  "difficulty": "intermediate",
+  "durationInMinutes": 50
+}
+
+###

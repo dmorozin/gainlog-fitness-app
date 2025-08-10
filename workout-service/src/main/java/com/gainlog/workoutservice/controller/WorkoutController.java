@@ -1,17 +1,28 @@
 package com.gainlog.workoutservice.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.gainlog.workoutservice.model.WorkoutPlan;
+import com.gainlog.workoutservice.repository.WorkoutPlanRepository;
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/workouts")
+@RequiredArgsConstructor
 public class WorkoutController {
 
+    private final WorkoutPlanRepository workoutPlanRepository;
+
+
     @GetMapping
-    public List<String> getWorkouts() {
-        return List.of("Push", "Pull", "Legs");
+    public List<WorkoutPlan> getWorkouts() {
+        return workoutPlanRepository.findAll();
+    }
+
+    @PostMapping
+    public WorkoutPlan create(@RequestBody WorkoutPlan plan) {
+        return workoutPlanRepository.save(plan);
     }
 }

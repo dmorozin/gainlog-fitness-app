@@ -1,0 +1,4 @@
+### GET request to create patient
+GET http://localhost:8080/workouts
+
+###
