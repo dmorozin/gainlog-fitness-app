@@ -1,0 +1,4 @@
+### DELETE request to delete a workout
+DELETE http://localhost:8081/workouts/3
+
+###

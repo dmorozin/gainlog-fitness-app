@@ -1,12 +1,13 @@
 package com.gainlog.workoutservice.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -24,4 +25,13 @@ public class Workout extends BaseEntity {
 
     @Column(name = "description")
     private String description;
+
+    @OneToMany(mappedBy = "workout", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<WorkoutExercise> workoutExercises = new LinkedHashSet<>();
+
+    public void addWorkoutExercise(WorkoutExercise workoutExercise) {
+        workoutExercises.add(workoutExercise);
+        workoutExercise.setWorkout(this);
+    }
+
 }

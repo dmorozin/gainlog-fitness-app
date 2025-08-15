@@ -5,14 +5,15 @@ CREATE TABLE workouts
     name        VARCHAR(100) NOT NULL,
     description TEXT,
     created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    updated_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT uq_user_workout_name UNIQUE (user_id, name)
 );
 CREATE INDEX ix_workouts_user_id ON workouts (user_id);
 
 CREATE TABLE exercises
 (
     id              BIGSERIAL PRIMARY KEY,
-    exercise_api_id BIGINT       NOT NULL,
+    exercise_api_id VARCHAR(50)  NOT NULL,
     name            VARCHAR(100) NOT NULL,
     created_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP

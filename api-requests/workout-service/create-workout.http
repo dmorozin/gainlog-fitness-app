@@ -1,11 +1,24 @@
-### POST request to create patient
-POST http://localhost:8080/workouts
+### POST request to create a workout
+POST http://localhost:8081/workouts
 Content-Type: application/json
 
 {
-  "name": "upper lower",
-  "difficulty": "intermediate",
-  "durationInMinutes": 50
+  "name": "upper 2",
+  "description": "upper for 2323",
+  "workoutExercises": [
+    {
+      "exerciseApiId": "0002",
+      "sequence": 1
+    },
+    {
+      "exerciseApiId": "0009",
+      "sequence": 2
+    },
+    {
+      "exerciseApiId": "0010",
+      "sequence": 3
+    }
+  ]
 }
 
 ###

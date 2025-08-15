@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @Setter
 @Entity
 @Table(name = "workout_exercises")
-public class WorkoutExercise  {
+public class WorkoutExercise {
     @EmbeddedId
     private WorkoutExerciseId id;
 

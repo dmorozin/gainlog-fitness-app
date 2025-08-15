@@ -1,0 +1,28 @@
+### PUT request to update a workout
+PUT http://localhost:8081/workouts/1
+Content-Type: application/json
+
+{
+  "name": "upper 1",
+  "description": "upper for strength12312",
+  "workoutExercises": [
+    {
+      "exerciseApiId": 1,
+      "sequence": 1
+    },
+    {
+      "exerciseApiId": 2,
+      "sequence": 2
+    },
+    {
+      "exerciseApiId": 3,
+      "sequence": 3
+    },
+    {
+      "exerciseApiId": 4,
+      "sequence": 4
+    }
+  ]
+}
+
+###

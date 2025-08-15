@@ -15,7 +15,7 @@ import lombok.Setter;
 public class Exercise extends BaseEntity {
     @NotNull
     @Column(name = "exercise_api_id", nullable = false)
-    private Long exerciseApiId;
+    private String exerciseApiId;
 
     @Size(max = 100)
     @NotNull
