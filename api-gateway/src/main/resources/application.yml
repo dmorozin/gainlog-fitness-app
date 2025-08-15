@@ -9,16 +9,28 @@ spring:
       server:
         webflux:
           routes:
-            - id: workout-service
+            - id: workout-service-workouts
               uri: http://workout-service:8081
 #              uri: http://localhost:8081
               predicates:
-                - Path=/workouts/**
+                - Path=/api/workouts/**
+              filters:
+                - StripPrefix=1
+
+            - id: workout-service-exercises
+              uri: http://workout-service:8081
+#              uri: http://localhost:8081
+              predicates:
+                - Path=/api/exercise-api/**
+              filters:
+                - StripPrefix=1
+
             - id: user-service
               uri: http://user-service:8082
                 #              uri: http://localhost:8082
               predicates:
                 - Path=/users/**
+
             - id: auth-service
               uri: http://auth-service:8083
                 #              uri: http://localhost:8083
