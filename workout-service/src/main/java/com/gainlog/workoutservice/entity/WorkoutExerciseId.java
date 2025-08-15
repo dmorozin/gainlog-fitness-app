@@ -19,11 +19,11 @@ public class WorkoutExerciseId implements Serializable {
     private static final long serialVersionUID = 422753172835966603L;
     @NotNull
     @Column(name = "workout_id", nullable = false)
-    private Integer workoutId;
+    private Long workoutId;
 
     @NotNull
     @Column(name = "exercise_id", nullable = false)
-    private Integer exerciseId;
+    private Long exerciseId;
 
     @Override
     public boolean equals(Object o) {
