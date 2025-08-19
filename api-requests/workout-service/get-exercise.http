@@ -1,4 +1,5 @@
 ### GET request to get workout details
-GET http://localhost:8081/exercise-api/0001
+#GET http://localhost:8081/exercise-api/0001
+GET http://localhost:8080/api/exercise-api/0001
 
 ###

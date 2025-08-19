@@ -3,12 +3,12 @@ package com.gainlog.authservice.service;
 import com.gainlog.authservice.grpc.UserServiceGrpcClient;
 import com.gainlog.authservice.model.dto.LoginUserDTO;
 import com.gainlog.authservice.model.dto.RegisterUserDTO;
-import com.gainlog.authservice.utils.JwtUtil;
+import com.gainlog.common.security.CustomUserDetails;
+import com.gainlog.common.security.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import user.UserProto;
@@ -36,7 +36,10 @@ public class AuthenticationService {
         List<GrantedAuthority> authorities = userResponse.getRolesList().stream()
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
-        User user = new User(userResponse.getEmail(), userResponse.getPassword(), authorities);
+        CustomUserDetails user = new CustomUserDetails(userResponse.getId(),
+                userResponse.getEmail(),
+                userResponse.getPassword(),
+                authorities);
 
         return jwtUtil.generateToken(user);
     }

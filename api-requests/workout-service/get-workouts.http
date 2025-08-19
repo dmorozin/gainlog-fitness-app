@@ -1,4 +1,8 @@
 ### GET request to get workout details
-GET http://localhost:8081/workouts
+#GET http://localhost:8081/workouts
+GET http://localhost:8080/api/workouts
+
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJST0xFX0FETUlOIl0sInN1YiI6IjEiLCJpYXQiOjE3NTUzNjkwODYsImV4cCI6MTc1NTM3MjY4Nn0.0okCdEc56iM-GmWaz5wS_jEkHOgMZ9WsFmAECc4ynTQ
+
 
 ###

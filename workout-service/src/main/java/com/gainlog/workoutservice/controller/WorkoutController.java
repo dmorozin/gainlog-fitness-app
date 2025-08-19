@@ -5,6 +5,7 @@ import com.gainlog.workoutservice.dto.request.WorkoutRequestDTO;
 import com.gainlog.workoutservice.service.WorkoutService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,6 +26,7 @@ public class WorkoutController {
     @GetMapping
     public ResponseEntity<List<WorkoutDetailsDTO>> getAllWorkouts() {
         List<WorkoutDetailsDTO> workouts = workoutService.getWorkouts();
+        String id = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
         return ResponseEntity.ok().body(workouts);
     }
 

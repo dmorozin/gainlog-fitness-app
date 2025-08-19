@@ -1,6 +1,6 @@
 package com.gainlog.authservice.config;
 
-import com.gainlog.authservice.utils.JwtUtil;
+import com.gainlog.common.security.JwtUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -20,15 +20,16 @@ import org.springframework.web.servlet.HandlerExceptionResolver;
 import java.io.IOException;
 
 @Component
-public class JwtAuthenticationFilter extends OncePerRequestFilter {
+@Deprecated
+public class DeprecatedJwtAuthenticationFilter extends OncePerRequestFilter {
     private final HandlerExceptionResolver handlerExceptionResolver;
     private final JwtUtil jwtUtil;
     private final UserDetailsService userDetailsService;
 
-    public JwtAuthenticationFilter(@Qualifier("handlerExceptionResolver")
-                                   HandlerExceptionResolver handlerExceptionResolver,
-                                   JwtUtil jwtUtil,
-                                   UserDetailsService userDetailsService) {
+    public DeprecatedJwtAuthenticationFilter(@Qualifier("handlerExceptionResolver")
+                                             HandlerExceptionResolver handlerExceptionResolver,
+                                             JwtUtil jwtUtil,
+                                             UserDetailsService userDetailsService) {
         this.handlerExceptionResolver = handlerExceptionResolver;
         this.jwtUtil = jwtUtil;
         this.userDetailsService = userDetailsService;
