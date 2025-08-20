@@ -34,7 +34,9 @@ public class UserServiceGrpcClient {
         UserProto.CreateUserRequest request = UserProto.CreateUserRequest.newBuilder()
                 .setEmail(registerUserDTO.getEmail())
                 .setPassword(registerUserDTO.getPassword())
-                .setFullName(registerUserDTO.getFullName())
+                .setUsername(registerUserDTO.getUsername())
+                .setFirstName(registerUserDTO.getFirstName())
+                .setLastName(registerUserDTO.getLastName())
                 .build();
 
         return blockingStub.createUser(request);

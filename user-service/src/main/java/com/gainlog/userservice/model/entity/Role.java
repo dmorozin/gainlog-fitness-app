@@ -2,23 +2,20 @@ package com.gainlog.userservice.model.entity;
 
 import com.gainlog.userservice.utils.ERole;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
-@Table(name = "roles")
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
-public class Role {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+@Entity
+@Table(name = "roles")
+public class Role extends BaseEntity {
 
+    @Size(max = 20)
+    @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(length = 20)
+    @Column(name = "name", nullable = false, length = 20)
     private ERole name;
 }

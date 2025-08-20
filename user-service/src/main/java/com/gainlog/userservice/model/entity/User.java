@@ -1,46 +1,43 @@
 package com.gainlog.userservice.model.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
-import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
-@Table(name = "users")
-@Entity
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
-public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(nullable = false)
-    private Integer id;
-
-    @Column(nullable = false)
-    private String fullName;
-
-    @Column(unique = true, length = 100, nullable = false)
+@Entity
+@Table(name = "users")
+public class User extends BaseEntity {
+    @Size(max = 100)
+    @NotNull
+    @Column(name = "email", nullable = false, length = 100)
     private String email;
 
-    @Column(nullable = false)
+    @Size(max = 100)
+    @NotNull
+    @Column(name = "username", nullable = false, length = 100)
+    private String username;
+
+    @Size(max = 100)
+    @NotNull
+    @Column(name = "password", nullable = false, length = 100)
     private String password;
 
-    @CreationTimestamp
-    @Column(updatable = false, name = "created_at")
-    private Date createdAt;
+    @Size(max = 100)
+    @NotNull
+    @Column(name = "first_name", nullable = false, length = 100)
+    private String firstName;
 
-    @UpdateTimestamp
-    @Column(name = "updated_at")
-    private Date updatedAt;
+    @Size(max = 100)
+    @NotNull
+    @Column(name = "last_name", nullable = false, length = 100)
+    private String lastName;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles",

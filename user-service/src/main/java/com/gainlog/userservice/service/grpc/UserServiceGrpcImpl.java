@@ -27,11 +27,13 @@ public class UserServiceGrpcImpl extends UserServiceGrpc.UserServiceImplBase {
     public void createUser(UserProto.CreateUserRequest request,
                            StreamObserver<UserProto.UserResponse> responseObserver) {
         User user = new User();
-        user.setFullName(request.getFullName());
         user.setEmail(request.getEmail());
         user.setPassword(request.getPassword());
+        user.setUsername(request.getUsername());
+        user.setFirstName(request.getFirstName());
+        user.setLastName(request.getLastName());
 
-        Role role = roleRepository.findByName(ROLE_USER).orElseThrow(() -> new RuntimeException("role not found"));
+        Role role = roleRepository.findByName(ROLE_USER ).orElseThrow(() -> new RuntimeException("role not found"));
         user.setRoles(Set.of(role));
 
         User createdUser = userRepository.save(user);

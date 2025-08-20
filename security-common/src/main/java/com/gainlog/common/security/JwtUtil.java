@@ -23,10 +23,6 @@ public class JwtUtil {
     private final String secretKey;
     private final long jwtExpiration;
 
-    public String extractUsername(String token) {
-        return extractClaim(token, Claims::getSubject);
-    }
-
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
@@ -38,6 +34,7 @@ public class JwtUtil {
                 .map(GrantedAuthority::getAuthority)
                 .toList();
         extraClaims.put("roles", authorities);
+        extraClaims.put("username", userDetails.getUsername());
         return generateToken(extraClaims, userDetails);
     }
 
@@ -55,6 +52,10 @@ public class JwtUtil {
 
     public List<String> extractRoles(String token) {
         return extractAllClaims(token).get("roles", List.class);
+    }
+
+    public String extractUsername(String token) {
+        return extractAllClaims(token).get("username", String.class);
     }
 
     private String buildToken(
