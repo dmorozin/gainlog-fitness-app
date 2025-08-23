@@ -4,6 +4,7 @@ import com.gainlog.workoutservice.dto.ExerciseApiDTO;
 import com.gainlog.workoutservice.exception.ExerciseApiException;
 import com.gainlog.workoutservice.service.ExerciseAPIService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ import java.util.Collections;
 import java.util.List;
 
 @Service
+@Log4j2
 @RequiredArgsConstructor
 public class ExerciseAPIServiceImpl implements ExerciseAPIService {
 
@@ -43,6 +45,7 @@ public class ExerciseAPIServiceImpl implements ExerciseAPIService {
 
         ResponseEntity<T> response;
         try {
+            log.info("Sending request to: {}", url);
             response = restTemplate.exchange(url,
                     HttpMethod.GET,
                     HttpEntity.EMPTY,

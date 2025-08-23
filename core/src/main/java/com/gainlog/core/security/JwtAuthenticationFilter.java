@@ -1,5 +1,6 @@
-package com.gainlog.common.security;
+package com.gainlog.core.security;
 
+import com.gainlog.core.exception.JwtAuthenticationException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,7 +18,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
@@ -40,11 +40,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         try {
             final String token = authHeader.substring(7);
-            if (jwtUtil.isTokenExpired(token)) {
-                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                response.getWriter().write("Expired token");
-                return;
-            }
+            jwtUtil.isTokenExpired(token);
             final String userId = jwtUtil.extractUserId(token);
             final List<String> roles = jwtUtil.extractRoles(token);
 
@@ -67,19 +63,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     }
                 } else {
                     List<SimpleGrantedAuthority> authorities =
-                            roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+                            roles.stream().map(SimpleGrantedAuthority::new).toList();
 
                     UsernamePasswordAuthenticationToken authToken =
                             new UsernamePasswordAuthenticationToken(userId, null, authorities);
                     SecurityContextHolder.getContext().setAuthentication(authToken);
                 }
             }
-        } catch (Exception e) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.getWriter().write("Invalid token");
-            return;
-        }
 
-        filterChain.doFilter(request, response);
+            filterChain.doFilter(request, response);
+        } catch (Exception e) {
+            throw new JwtAuthenticationException("JWT processing failed", e);
+        }
     }
 }

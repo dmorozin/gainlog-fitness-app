@@ -17,7 +17,7 @@ public class UserServiceGrpcClient {
 
     public UserServiceGrpcClient(@Value("${user.service.address:localhost}") String serverAddress,
                                  @Value("${user.service.grpc.port:9002}") int serverPort) {
-        log.info("Connecting to User Service GRPC server at {}:{}", serverAddress, serverPort);
+        log.info("Connecting to user-service GRPC server at {}:{}", serverAddress, serverPort);
         ManagedChannel channel = ManagedChannelBuilder.forAddress(serverAddress, serverPort).usePlaintext().build();
         blockingStub = UserServiceGrpc.newBlockingStub(channel);
     }
@@ -27,6 +27,7 @@ public class UserServiceGrpcClient {
                 .setEmail(email)
                 .build();
 
+        log.info("Sending request to user-service to get user");
         return blockingStub.getUserByEmail(request);
     }
 
@@ -39,6 +40,7 @@ public class UserServiceGrpcClient {
                 .setLastName(registerUserDTO.getLastName())
                 .build();
 
+        log.info("Sending request to user-service to create user");
         return blockingStub.createUser(request);
     }
 }

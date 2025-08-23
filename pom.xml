@@ -16,7 +16,7 @@
         <module>auth-service</module>
         <module>user-service</module>
         <module>proto-common</module>
-        <module>security-common</module>
+        <module>core</module>
     </modules>
 
     <properties>

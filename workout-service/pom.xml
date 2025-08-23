@@ -80,7 +80,7 @@
         </dependency>
         <dependency>
             <groupId>com.gainlog</groupId>
-            <artifactId>security-common</artifactId>
+            <artifactId>core</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>

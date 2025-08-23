@@ -3,8 +3,8 @@ package com.gainlog.authservice.service;
 import com.gainlog.authservice.grpc.UserServiceGrpcClient;
 import com.gainlog.authservice.model.dto.LoginUserDTO;
 import com.gainlog.authservice.model.dto.RegisterUserDTO;
-import com.gainlog.common.security.CustomUserDetails;
-import com.gainlog.common.security.JwtUtil;
+import com.gainlog.core.security.CustomUserDetails;
+import com.gainlog.core.security.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.GrantedAuthority;
@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
+
     private final PasswordEncoder passwordEncoder;
     private final UserServiceGrpcClient userServiceGrpcClient;
     private final JwtUtil jwtUtil;

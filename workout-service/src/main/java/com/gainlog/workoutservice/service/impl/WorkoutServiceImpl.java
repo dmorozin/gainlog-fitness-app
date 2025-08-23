@@ -1,12 +1,12 @@
 package com.gainlog.workoutservice.service.impl;
 
+import com.gainlog.core.exception.ResourceNotFoundException;
 import com.gainlog.workoutservice.dto.WorkoutDetailsDTO;
 import com.gainlog.workoutservice.dto.request.WorkoutRequestDTO;
 import com.gainlog.workoutservice.entity.Exercise;
 import com.gainlog.workoutservice.entity.Workout;
 import com.gainlog.workoutservice.entity.WorkoutExercise;
 import com.gainlog.workoutservice.entity.WorkoutExerciseId;
-import com.gainlog.workoutservice.exception.ResourceNotFoundException;
 import com.gainlog.workoutservice.repository.WorkoutExerciseRepository;
 import com.gainlog.workoutservice.repository.WorkoutRepository;
 import com.gainlog.workoutservice.service.ExerciseService;

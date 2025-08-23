@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/workout-log")
+@RequestMapping("/workout-logs")
 @RequiredArgsConstructor
 public class WorkoutLogController {
 

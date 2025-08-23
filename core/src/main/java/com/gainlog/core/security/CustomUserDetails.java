@@ -1,4 +1,4 @@
-package com.gainlog.common.security;
+package com.gainlog.core.security;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

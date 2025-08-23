@@ -1,6 +1,6 @@
 package com.gainlog.userservice.service;
 
-import com.gainlog.common.security.CustomUserDetails;
+import com.gainlog.core.security.CustomUserDetails;
 import com.gainlog.userservice.model.entity.Role;
 import com.gainlog.userservice.model.entity.User;
 import com.gainlog.userservice.repository.UserRepository;
@@ -16,6 +16,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.gainlog.userservice.utils.Constants.USER_NOT_FOUND;
+
 @Service
 @RequiredArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService {
@@ -25,7 +27,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
-        User user = userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException(email));
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException(String.format(USER_NOT_FOUND, email)));
 
         List<String> roles = user.getRoles()
                 .stream()

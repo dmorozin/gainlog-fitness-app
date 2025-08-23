@@ -8,9 +8,9 @@
     </parent>
 
     <groupId>com.gainlog</groupId>
-    <artifactId>security-common</artifactId>
+    <artifactId>core</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>security-common</name>
+    <name>core</name>
     <description>Shared security utilities (JWT, filters, etc.) for all services</description>
 
     <packaging>jar</packaging>

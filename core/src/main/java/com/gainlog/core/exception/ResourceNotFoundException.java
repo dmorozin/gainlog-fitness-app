@@ -1,4 +1,4 @@
-package com.gainlog.workoutservice.exception;
+package com.gainlog.core.exception;
 
 public class ResourceNotFoundException extends RuntimeException {
     public ResourceNotFoundException(String message) {
