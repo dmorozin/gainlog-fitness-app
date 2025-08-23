@@ -10,7 +10,7 @@ public interface WorkoutService {
 
     WorkoutDetailsDTO getWorkoutDetails(long workoutId);
 
-    List<WorkoutDetailsDTO> getWorkouts();
+    List<WorkoutDetailsDTO> getUserWorkouts();
 
     void deleteWorkout(long workoutId);
 

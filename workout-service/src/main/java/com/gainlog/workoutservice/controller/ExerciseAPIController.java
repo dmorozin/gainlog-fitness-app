@@ -25,7 +25,7 @@ public class ExerciseAPIController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ExerciseApiDTO> getExerciseById(@PathVariable("id") String id) {
+    public ResponseEntity<ExerciseApiDTO> getExerciseById(@PathVariable("id") final String id) {
         ExerciseApiDTO exercise = exerciseAPIService.getExerciseById(id);
         return ResponseEntity.ok().body(exercise);
     }

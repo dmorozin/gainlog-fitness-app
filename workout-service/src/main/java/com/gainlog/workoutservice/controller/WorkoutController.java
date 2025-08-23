@@ -5,7 +5,6 @@ import com.gainlog.workoutservice.dto.request.WorkoutRequestDTO;
 import com.gainlog.workoutservice.service.WorkoutService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,33 +17,32 @@ public class WorkoutController {
     private final WorkoutService workoutService;
 
     @PostMapping
-    public ResponseEntity<?> createWorkout(@RequestBody WorkoutRequestDTO workoutRequestDTO) {
+    public ResponseEntity<?> createWorkout(@RequestBody final WorkoutRequestDTO workoutRequestDTO) {
         workoutService.createWorkout(workoutRequestDTO);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping
-    public ResponseEntity<List<WorkoutDetailsDTO>> getAllWorkouts() {
-        List<WorkoutDetailsDTO> workouts = workoutService.getWorkouts();
-        String id = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+    public ResponseEntity<List<WorkoutDetailsDTO>> getUserWorkouts() {
+        List<WorkoutDetailsDTO> workouts = workoutService.getUserWorkouts();
         return ResponseEntity.ok().body(workouts);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<WorkoutDetailsDTO> getWorkoutDetails(@PathVariable("id") Long id) {
+    public ResponseEntity<WorkoutDetailsDTO> getWorkoutDetails(@PathVariable("id") final Long id) {
         WorkoutDetailsDTO workoutDetails = workoutService.getWorkoutDetails(id);
         return ResponseEntity.ok().body(workoutDetails);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<WorkoutDetailsDTO> updateWorkoutDetails(@PathVariable("id") Long id,
-                                                                  @RequestBody WorkoutRequestDTO workoutRequestDTO) {
+    public ResponseEntity<WorkoutDetailsDTO> updateWorkoutDetails(@PathVariable("id") final Long id,
+                                                                  @RequestBody final WorkoutRequestDTO workoutRequestDTO) {
         WorkoutDetailsDTO workoutDetails = workoutService.updateWorkout(id, workoutRequestDTO);
         return ResponseEntity.ok().body(workoutDetails);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteWorkout(@PathVariable("id") Long id) {
+    public ResponseEntity<?> deleteWorkout(@PathVariable("id") final Long id) {
         workoutService.deleteWorkout(id);
         return ResponseEntity.noContent().build();
     }

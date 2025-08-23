@@ -8,6 +8,8 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDateTime;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -23,8 +25,9 @@ public class WorkoutLog extends BaseEntity {
     @Column(name = "start_date_time", nullable = false)
     private LocalDateTime startDateTime;
 
-    @NotNull
-    @Column(name = "end_date_time", nullable = false)
+    @Column(name = "end_date_time")
     private LocalDateTime endDateTime;
 
+    @OneToMany(mappedBy = "workoutLog", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<WorkoutLogSet> sets = new LinkedHashSet<>();
 }

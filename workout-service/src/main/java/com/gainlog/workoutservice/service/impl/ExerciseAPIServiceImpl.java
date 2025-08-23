@@ -1,6 +1,7 @@
 package com.gainlog.workoutservice.service.impl;
 
 import com.gainlog.workoutservice.dto.ExerciseApiDTO;
+import com.gainlog.workoutservice.exception.ExerciseApiException;
 import com.gainlog.workoutservice.service.ExerciseAPIService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
@@ -33,13 +34,7 @@ public class ExerciseAPIServiceImpl implements ExerciseAPIService {
 
     @Override
     public ExerciseApiDTO getExerciseById(String id) {
-        String urlExtension = "/exercise/" + id;
-        ResponseEntity<ExerciseApiDTO> response = getExerciseApiResponse(urlExtension, ExerciseApiDTO.class);
-
-        if (!response.getStatusCode().is2xxSuccessful()) {
-            throw new RuntimeException("Exercise API returned an error: " + response.getStatusCode());
-        }
-
+        ResponseEntity<ExerciseApiDTO> response = getExerciseApiResponse("/exercise/" + id, ExerciseApiDTO.class);
         return response.getBody();
     }
 
@@ -53,11 +48,11 @@ public class ExerciseAPIServiceImpl implements ExerciseAPIService {
                     HttpEntity.EMPTY,
                     responseType);
         } catch (Exception ex) {
-            throw new RuntimeException("Failed to call Exercise API: " + ex.getMessage(), ex);
+            throw new ExerciseApiException("Failed to call Exercise API: " + ex.getMessage(), ex);
         }
 
         if (!response.getStatusCode().is2xxSuccessful()) {
-            throw new RuntimeException("Exercise API returned an error: " + response.getStatusCode());
+            throw new ExerciseApiException("Exercise API returned an error: " + response.getStatusCode());
         }
 
         return response;

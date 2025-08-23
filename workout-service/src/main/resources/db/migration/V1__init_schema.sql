@@ -37,7 +37,7 @@ CREATE TABLE workout_logs
     id              BIGSERIAL PRIMARY KEY,
     workout_id      BIGSERIAL REFERENCES workouts (id) ON UPDATE CASCADE ON DELETE CASCADE,
     start_date_time TIMESTAMP NOT NULL,
-    end_date_time   TIMESTAMP NOT NULL,
+    end_date_time   TIMESTAMP,
     created_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

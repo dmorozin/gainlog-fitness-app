@@ -36,6 +36,7 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/workouts/**").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers("/workout-log/**").hasAnyRole("USER", "ADMIN")
                         .requestMatchers("/exercise-api/**").hasAnyRole("ADMIN")
                         .anyRequest().authenticated()
                 )

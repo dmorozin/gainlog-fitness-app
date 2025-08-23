@@ -20,15 +20,15 @@ public class ExerciseServiceImpl implements ExerciseService {
 
     @Override
     @Transactional
-    public Exercise getExerciseByExerciseApiId(String exerciseApiId) {
-        Optional<Exercise> exercise = exerciseRepository.findByExerciseApiId(exerciseApiId);
+    public Exercise getExerciseByExerciseApiId(final String exerciseApiId) {
+        final Optional<Exercise> exercise = exerciseRepository.findByExerciseApiId(exerciseApiId);
         return exercise.orElseGet(() -> createExerciseFromAPI(exerciseApiId));
     }
 
-    private Exercise createExerciseFromAPI(String exerciseApiId) {
-        ExerciseApiDTO exerciseApiDTO = exerciseAPIService.getExerciseById(exerciseApiId);
+    private Exercise createExerciseFromAPI(final String exerciseApiId) {
+        final ExerciseApiDTO exerciseApiDTO = exerciseAPIService.getExerciseById(exerciseApiId);
 
-        Exercise newExercise = new Exercise();
+        final Exercise newExercise = new Exercise();
         newExercise.setExerciseApiId(exerciseApiDTO.getId());
         newExercise.setName(exerciseApiDTO.getName());
         exerciseRepository.save(newExercise);
