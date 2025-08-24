@@ -3,6 +3,7 @@ package com.gainlog.authservice.controller;
 import com.gainlog.authservice.model.dto.LoginUserDTO;
 import com.gainlog.authservice.model.dto.RegisterUserDTO;
 import com.gainlog.authservice.service.AuthenticationService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,13 +20,13 @@ public class AuthenticationController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<?> register(@RequestBody RegisterUserDTO registerUserDto) {
+    public ResponseEntity<?> register(@RequestBody @Valid RegisterUserDTO registerUserDto) {
         authenticationService.signup(registerUserDto);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> authenticate(@RequestBody LoginUserDTO loginUserDto) {
+    public ResponseEntity<String> authenticate(@RequestBody @Valid LoginUserDTO loginUserDto) {
         String token = authenticationService.authenticate(loginUserDto);
         return ResponseEntity.ok(token);
     }

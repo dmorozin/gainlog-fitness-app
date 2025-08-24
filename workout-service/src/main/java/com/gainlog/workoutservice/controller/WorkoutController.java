@@ -3,6 +3,7 @@ package com.gainlog.workoutservice.controller;
 import com.gainlog.workoutservice.dto.WorkoutDetailsDTO;
 import com.gainlog.workoutservice.dto.request.WorkoutRequestDTO;
 import com.gainlog.workoutservice.service.WorkoutService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +18,7 @@ public class WorkoutController {
     private final WorkoutService workoutService;
 
     @PostMapping
-    public ResponseEntity<?> createWorkout(@RequestBody final WorkoutRequestDTO workoutRequestDTO) {
+    public ResponseEntity<?> createWorkout(@Valid @RequestBody final WorkoutRequestDTO workoutRequestDTO) {
         workoutService.createWorkout(workoutRequestDTO);
         return ResponseEntity.ok().build();
     }
@@ -36,7 +37,7 @@ public class WorkoutController {
 
     @PutMapping("/{id}")
     public ResponseEntity<WorkoutDetailsDTO> updateWorkoutDetails(@PathVariable("id") final Long id,
-                                                                  @RequestBody final WorkoutRequestDTO workoutRequestDTO) {
+                                                                  @Valid @RequestBody final WorkoutRequestDTO workoutRequestDTO) {
         WorkoutDetailsDTO workoutDetails = workoutService.updateWorkout(id, workoutRequestDTO);
         return ResponseEntity.ok().body(workoutDetails);
     }

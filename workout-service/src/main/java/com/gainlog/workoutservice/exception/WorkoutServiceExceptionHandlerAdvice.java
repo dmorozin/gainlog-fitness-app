@@ -5,9 +5,12 @@ import com.gainlog.core.exception.ResourceNotFoundException;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
+
+import java.util.List;
 
 @RestControllerAdvice
 @Log4j2
@@ -20,9 +23,24 @@ public class WorkoutServiceExceptionHandlerAdvice {
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<ExceptionDetails> handleResourceNotFound(ResourceNotFoundException ex, WebRequest request) {
+    public ResponseEntity<ExceptionDetails> handleResourceNotFoundException(ResourceNotFoundException ex, WebRequest request) {
         log.error(ex.getMessage(), ex);
         return getResponseForHttpStatus(HttpStatus.NOT_FOUND, ex.getMessage(), request);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ExceptionDetails> handleValidationException(
+            MethodArgumentNotValidException ex, WebRequest request) {
+
+        List<String> errors = ex.getBindingResult()
+                .getFieldErrors()
+                .stream()
+                .map(error -> error.getField() + ": " + error.getDefaultMessage())
+                .toList();
+
+        String message = String.join("; ", errors);
+
+        return getResponseForHttpStatus(HttpStatus.BAD_REQUEST, message, request);
     }
 
     @ExceptionHandler(Exception.class)

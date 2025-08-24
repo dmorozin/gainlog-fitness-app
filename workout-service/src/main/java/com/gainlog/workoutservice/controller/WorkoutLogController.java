@@ -3,6 +3,7 @@ package com.gainlog.workoutservice.controller;
 import com.gainlog.workoutservice.dto.WorkoutLogDTO;
 import com.gainlog.workoutservice.dto.request.WorkoutLogProgressDTO;
 import com.gainlog.workoutservice.service.WorkoutLogService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,7 +32,7 @@ public class WorkoutLogController {
                                           @RequestParam(name = "isComplete",
                                                   required = false,
                                                   defaultValue = "false") final boolean isComplete,
-                                          @RequestBody WorkoutLogProgressDTO workoutRequestDTO) {
+                                          @Valid @RequestBody WorkoutLogProgressDTO workoutRequestDTO) {
         workoutLogService.saveProgress(id, isComplete, workoutRequestDTO.getExerciseSets());
         return ResponseEntity.ok().build();
     }
