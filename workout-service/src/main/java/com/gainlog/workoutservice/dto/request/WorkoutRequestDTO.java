@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -29,6 +30,7 @@ public class WorkoutRequestDTO {
     @Getter
     @Setter
     @NoArgsConstructor
+    @AllArgsConstructor
     public static class WorkoutExerciseDTO {
         @NotBlank(message = "Exercise API ID is required")
         private String exerciseApiId;
