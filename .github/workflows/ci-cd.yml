@@ -48,12 +48,19 @@ jobs:
         id: set-matrix
         run: |
           CHANGED_SERVICES=()
-          if [[ "${{ needs.detect-changes.outputs.api-gateway }}" == "true" ]]; then CHANGED_SERVICES+=('"api-gateway"'); fi
-          if [[ "${{ needs.detect-changes.outputs.workout-service }}" == "true" ]]; then CHANGED_SERVICES+=('"workout-service"'); fi
-          if [[ "${{ needs.detect-changes.outputs.user-service }}" == "true" ]]; then CHANGED_SERVICES+=('"user-service"'); fi
-          if [[ "${{ needs.detect-changes.outputs.auth-service }}" == "true" ]]; then CHANGED_SERVICES+=('"auth-service"'); fi
-          if [[ "${{ needs.detect-changes.outputs.notification-service }}" == "true" ]]; then CHANGED_SERVICES+=('"notification-service"'); fi
-          MATRIX="{\"service\":[${CHANGED_SERVICES[*]// /,}]}"
+          [[ "${{ needs.detect-changes.outputs.api-gateway }}" == "true" ]] && CHANGED_SERVICES+=("api-gateway")
+          [[ "${{ needs.detect-changes.outputs.workout-service }}" == "true" ]] && CHANGED_SERVICES+=("workout-service")
+          [[ "${{ needs.detect-changes.outputs.user-service }}" == "true" ]] && CHANGED_SERVICES+=("user-service")
+          [[ "${{ needs.detect-changes.outputs.auth-service }}" == "true" ]] && CHANGED_SERVICES+=("auth-service")
+          [[ "${{ needs.detect-changes.outputs.notification-service }}" == "true" ]] && CHANGED_SERVICES+=("notification-service")
+
+          if [ ${#CHANGED_SERVICES[@]} -eq 0 ]; then
+            MATRIX='{"service":[]}'
+          else
+            JSON_ARRAY=$(printf '%s\n' "${CHANGED_SERVICES[@]}" | jq -R . | jq -s .)
+            MATRIX=$(jq -n --argjson arr "$JSON_ARRAY" '{service: $arr}')
+          fi
+
           echo "matrix=$MATRIX" >> $GITHUB_OUTPUT
 
   build-and-push:
@@ -89,6 +96,11 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build and push Docker image
-        run: |
-          docker build -f ${{ matrix.service }}/Dockerfile -t $DOCKER_USER/${{ matrix.service }}:latest .
-          docker push $DOCKER_USER/${{ matrix.service }}:latest
+        uses: docker/build-push-action@v4
+        with:
+          context: ./${{ matrix.service }}
+          file: ./${{ matrix.service }}/Dockerfile
+          push: true
+          tags: ${{ env.DOCKER_USER }}/${{ matrix.service }}:latest
+          cache-from: type=registry,ref=${{ env.DOCKER_USER }}/${{ matrix.service }}:cache
+          cache-to: type=registry,ref=${{ env.DOCKER_USER }}/${{ matrix.service }}:cache,mode=max
