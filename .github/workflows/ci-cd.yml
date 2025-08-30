@@ -58,6 +58,7 @@ jobs:
 
   build-and-push:
     needs: generate-matrix
+    if: ${{ needs.generate-matrix.outputs.matrix != '{"service":[]}' }}
     runs-on: ubuntu-latest
     strategy:
       matrix: ${{ fromJSON(needs.generate-matrix.outputs.matrix) }}
