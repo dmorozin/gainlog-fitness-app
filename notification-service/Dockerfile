@@ -2,7 +2,13 @@
 FROM maven:3.9.9-eclipse-temurin-21 AS builder
 WORKDIR /app
 
-# Copy entire project to allow parent/child POM resolution
+# Copy just the root POM first
+COPY pom.xml .
+
+# Install the parent POM
+RUN mvn -N install
+
+# Copy the rest of the source code
 COPY .. .
 
 # Build only the notification-service module
