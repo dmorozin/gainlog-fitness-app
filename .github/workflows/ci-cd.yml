@@ -61,9 +61,11 @@ jobs:
             MATRIX=$(jq -n --argjson arr "$JSON_ARRAY" '{service: $arr}')
           fi
 
-          echo "matrix=$MATRIX" >> $GITHUB_OUTPUT
+          echo "matrix<<EOF" >> $GITHUB_OUTPUT
+          echo "$MATRIX" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
 
-  build-and-push:
+build-and-push:
     needs: generate-matrix
     if: ${{ needs.generate-matrix.outputs.matrix != '{"service":[]}' }}
     runs-on: ubuntu-latest
