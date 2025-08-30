@@ -68,7 +68,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build and push Docker image
-        if: contains(fromJSON(needs.detect-changes.outputs.changed-services), matrix.service)
+        if: contains(needs.detect-changes.outputs.changed-services, format('"{0}"', matrix.service))
         run: |
           docker build -f ${{ matrix.service }}/Dockerfile -t $DOCKER_USER/${{ matrix.service }}:latest .
           docker push $DOCKER_USER/${{ matrix.service }}:latest
