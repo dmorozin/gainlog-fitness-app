@@ -28,7 +28,10 @@ public class UserServiceGrpcClient {
                 .build();
 
         log.info("Sending request to user-service to get user");
-        return blockingStub.getUserByEmail(request);
+        UserProto.UserResponse userResponse = blockingStub.getUserByEmail(request);
+        log.info("Received user response: {}", userResponse.toString());
+
+        return userResponse;
     }
 
     public UserProto.UserResponse createUser(RegisterUserDTO registerUserDTO) {
@@ -41,6 +44,9 @@ public class UserServiceGrpcClient {
                 .build();
 
         log.info("Sending request to user-service to create user");
-        return blockingStub.createUser(request);
+        UserProto.UserResponse userResponse = blockingStub.createUser(request);
+        log.info("Received user response: {}", userResponse.toString());
+
+        return userResponse;
     }
 }
