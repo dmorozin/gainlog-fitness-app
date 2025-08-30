@@ -28,7 +28,8 @@ public class ExerciseServiceImpl implements ExerciseService {
     private Exercise createExerciseFromAPI(final String exerciseApiId) {
         final ExerciseApiDTO exerciseApiDTO = exerciseAPIService.getExerciseById(exerciseApiId);
         final Exercise exercise = new Exercise();
-        exercise.setExerciseApiId(exerciseApiDTO.getId());
+        exercise.setExerciseApiId(exerciseApiDTO
+                .getId());
         exercise.setName(exerciseApiDTO.getName());
         return exerciseRepository.save(exercise);
     }
