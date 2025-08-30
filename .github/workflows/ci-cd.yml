@@ -53,7 +53,7 @@ jobs:
           if [[ "${{ needs.detect-changes.outputs.user-service }}" == "true" ]]; then CHANGED_SERVICES+=('"user-service"'); fi
           if [[ "${{ needs.detect-changes.outputs.auth-service }}" == "true" ]]; then CHANGED_SERVICES+=('"auth-service"'); fi
           if [[ "${{ needs.detect-changes.outputs.notification-service }}" == "true" ]]; then CHANGED_SERVICES+=('"notification-service"'); fi
-          MATRIX="{\"service\":[${CHANGED_SERVICES[*]}]}"
+          MATRIX="{\"service\":[${CHANGED_SERVICES[*]// /,}]}"
           echo "matrix=$MATRIX" >> $GITHUB_OUTPUT
 
   build-and-push:
