@@ -65,7 +65,7 @@ jobs:
           echo "$MATRIX" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
 
-build-and-push:
+  build-and-push:
     needs: generate-matrix
     if: ${{ needs.generate-matrix.outputs.matrix != '{"service":[]}' }}
     runs-on: ubuntu-latest
