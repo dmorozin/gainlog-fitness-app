@@ -15,6 +15,7 @@
         <module>workout-service</module>
         <module>auth-service</module>
         <module>user-service</module>
+        <module>notification-service</module>
         <module>proto-common</module>
         <module>core</module>
     </modules>
@@ -61,6 +62,19 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-validation</artifactId>
                 <version>${spring.boot.version}</version>
+            </dependency>
+
+
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-mail</artifactId>
+                <version>${spring.boot.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.kafka</groupId>
+                <artifactId>spring-kafka</artifactId>
+                <version>3.3.9</version>
             </dependency>
 
             <dependency>

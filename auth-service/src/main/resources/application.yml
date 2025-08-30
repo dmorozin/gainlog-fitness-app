@@ -1,9 +1,19 @@
 server:
   port: 8083
 
+app:
+  kafka:
+    topics:
+      userRegistered: user-service.user-registered.v1
+
 spring:
   application:
     name: auth-service
+  kafka:
+    bootstrap-servers: ${SPRING_KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.ByteArraySerializer
 
 security:
   jwt:

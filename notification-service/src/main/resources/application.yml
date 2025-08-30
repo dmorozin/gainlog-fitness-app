@@ -1,0 +1,36 @@
+server:
+  port: 8084
+
+app:
+  kafka:
+    topics:
+      userRegistered: user-service.user-registered.v1
+    groupId: notification-service
+
+spring:
+  application:
+    name: notification-service
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${EMAIL_USERNAME:domorozin@gmail.com}
+    password: ${EMAIL_PASSWORD:ikiu odgk wcyu hwan}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+          ssl:
+            trust: "*"
+            checkserveridentity: false
+        transport:
+          protocol: smtps
+        debug: true
+  kafka:
+    bootstrap-servers:  ${SPRING_KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    consumer:
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.ByteArrayDeserializer
+      auto-offset-reset: earliest
+      group-id: ${app.kafka.groupId}
