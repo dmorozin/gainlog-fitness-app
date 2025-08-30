@@ -8,7 +8,11 @@ jobs:
   detect-changes:
     runs-on: ubuntu-latest
     outputs:
-      changed-services: ${{ steps.filter.outputs.changed }}
+      api-gateway: ${{ steps.filter.outputs.api-gateway }}
+      workout-service: ${{ steps.filter.outputs.workout-service }}
+      user-service: ${{ steps.filter.outputs.user-service }}
+      auth-service: ${{ steps.filter.outputs.auth-service }}
+      notification-service: ${{ steps.filter.outputs.notification-service }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -34,13 +38,29 @@ jobs:
               - 'notification-service/**'
               - 'pom.xml'
 
-  build-and-push:
+  generate-matrix:
     needs: detect-changes
-    if: needs.detect-changes.outputs.changed-services != '[]'
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - name: Generate matrix from changed services
+        id: set-matrix
+        run: |
+          CHANGED_SERVICES=()
+          if [[ "${{ needs.detect-changes.outputs.api-gateway }}" == "true" ]]; then CHANGED_SERVICES+=('"api-gateway"'); fi
+          if [[ "${{ needs.detect-changes.outputs.workout-service }}" == "true" ]]; then CHANGED_SERVICES+=('"workout-service"'); fi
+          if [[ "${{ needs.detect-changes.outputs.user-service }}" == "true" ]]; then CHANGED_SERVICES+=('"user-service"'); fi
+          if [[ "${{ needs.detect-changes.outputs.auth-service }}" == "true" ]]; then CHANGED_SERVICES+=('"auth-service"'); fi
+          if [[ "${{ needs.detect-changes.outputs.notification-service }}" == "true" ]]; then CHANGED_SERVICES+=('"notification-service"'); fi
+          MATRIX="{\"service\":[${CHANGED_SERVICES[*]}]}"
+          echo "matrix=$MATRIX" >> $GITHUB_OUTPUT
+
+  build-and-push:
+    needs: generate-matrix
     runs-on: ubuntu-latest
     strategy:
-      matrix:
-        service: [ 'api-gateway', 'workout-service', 'user-service', 'auth-service', 'notification-service' ]
+      matrix: ${{ fromJSON(needs.generate-matrix.outputs.matrix) }}
       fail-fast: false
     env:
       DOCKER_USER: ${{ secrets.DOCKER_USERNAME }}
@@ -68,8 +88,6 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build and push Docker image
-        if: contains(needs.detect-changes.outputs.changed-services, format('"{0}"', matrix.service))
         run: |
           docker build -f ${{ matrix.service }}/Dockerfile -t $DOCKER_USER/${{ matrix.service }}:latest .
           docker push $DOCKER_USER/${{ matrix.service }}:latest
-        continue-on-error: false
