@@ -3,7 +3,7 @@ FROM maven:3.9.9-eclipse-temurin-21 AS builder
 WORKDIR /app
 
 # Copy entire project to allow parent/child POM resolution
-COPY .. .
+COPY . .
 
 # Build only the auth-service module
 RUN mvn -pl auth-service -am clean package -DskipTests
