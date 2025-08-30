@@ -38,7 +38,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         UserProto.UserResponse userResponse = userServiceGrpcClient.createUser(input);
         try {
             kafkaTemplate.send(userRegisteredTopic, userResponse.toByteArray());
-            log.info("User event  sent: {}", userResponse);
+            log.info("User event sent: {}", userResponse);
         } catch (Exception e) {
             log.error("Error sending event: {}", e.getMessage());
         }
