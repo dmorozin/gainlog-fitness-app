@@ -1,22 +1,26 @@
-# === BASE BUILD STAGE (common) ===
+# === BASE BUILD STAGE ===
 FROM maven:3.9.9-eclipse-temurin-21 AS base
 WORKDIR /app
 
-# Copy root pom.xml
+# === Copy POMs for dependency caching ===
 COPY pom.xml .
-# Copy workout-service pom.xml
+COPY core/pom.xml core/
+COPY proto-common/pom.xml proto-common/
 COPY workout-service/pom.xml workout-service/
 
-# Download dependencies (parent + workout-service)
+# === Install internal modules into local Maven repo ===
+RUN mvn -pl core,proto-common -am clean install -DskipTests
+
+# === Download dependencies for workout-service only ===
 RUN mvn -f workout-service/pom.xml dependency:go-offline -B
 
-# Copy full source
+# === Copy full source code ===
 COPY . .
 
 # === TEST STAGE ===
 FROM base AS test
 WORKDIR /app
-# Run tests for this module (includes deps from base)
+# Run tests for workout-service (includes dependencies from base)
 RUN mvn -pl workout-service -am clean verify
 
 # === BUILD STAGE ===
