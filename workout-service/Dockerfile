@@ -2,10 +2,12 @@
 FROM maven:3.9.9-eclipse-temurin-21 AS base
 WORKDIR /app
 
-# Copy only workout-service pom.xml for dependency caching
+# Copy root pom.xml
+COPY pom.xml .
+# Copy workout-service pom.xml
 COPY workout-service/pom.xml workout-service/
 
-# Download dependencies for workout-service only
+# Download dependencies (parent + workout-service)
 RUN mvn -f workout-service/pom.xml dependency:go-offline -B
 
 # Copy full source
