@@ -19,13 +19,14 @@ public class WorkoutServiceExceptionHandlerAdvice {
     @ExceptionHandler(ExerciseApiException.class)
     public ResponseEntity<ExceptionDetails> handleExerciseApiException(ExerciseApiException ex, WebRequest request) {
         log.error("Exercise API error: {}", ex.getMessage(), ex);
-        return getResponseForHttpStatus(HttpStatus.BAD_GATEWAY, ex.getMessage(), request);
+        return getResponseForHttpStatus(HttpStatus.BAD_GATEWAY, ex.getMessage() != null ? ex.getMessage() : "Error occurred while processing exercise API request", request);
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ExceptionDetails> handleResourceNotFoundException(ResourceNotFoundException ex, WebRequest request) {
-        log.error(ex.getMessage(), ex);
-        return getResponseForHttpStatus(HttpStatus.NOT_FOUND, ex.getMessage(), request);
+        log.error("Resource not found: {}", ex.getMessage(), ex);
+        String errorMessage = ex.getMessage() != null ? ex.getMessage() : "The requested resource was not found";
+        return getResponseForHttpStatus(HttpStatus.NOT_FOUND, errorMessage, request);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
