@@ -3,7 +3,7 @@ FROM maven:3.9.9-eclipse-temurin-21 AS builder
 WORKDIR /app
 
 # Copy entire project to allow parent/child POM resolution
-COPY .. .
+COPY . .
 
 # Build only the workout-service module
 RUN mvn -pl workout-service -am clean package -DskipTests
