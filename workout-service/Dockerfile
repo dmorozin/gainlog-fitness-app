@@ -2,16 +2,17 @@
 FROM maven:3.9.9-eclipse-temurin-21 AS base
 WORKDIR /app
 
-# === Copy POMs for dependency caching ===
+# Copy parent and internal module POMs only
 COPY pom.xml .
 COPY core/pom.xml core/
 COPY proto-common/pom.xml proto-common/
 COPY workout-service/pom.xml workout-service/
 
-# === Install internal modules into local Maven repo ===
-RUN mvn -pl core,proto-common -am clean install -DskipTests
+# Build only internal modules needed for workout-service
+RUN mvn -f core/pom.xml clean install -DskipTests
+RUN mvn -f proto-common/pom.xml clean install -DskipTests
 
-# === Download dependencies for workout-service only ===
+# Download dependencies for workout-service (internal modules now in local repo)
 RUN mvn -f workout-service/pom.xml dependency:go-offline -B
 
 # === Copy full source code ===
