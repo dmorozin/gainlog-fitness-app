@@ -75,8 +75,29 @@ jobs:
           echo "$MATRIX" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
 
-  build-and-push:
+  run-tests:
     needs: generate-matrix
+    if: ${{ needs.generate-matrix.outputs.matrix != '{"service":[]}' }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix: ${{ fromJSON(needs.generate-matrix.outputs.matrix) }}
+      fail-fast: false
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      - name: Run tests for ${{ matrix.service }}
+        run: |
+          mvn -pl ${{ matrix.service }} -am test
+
+  build-and-push:
+    needs: [run-tests, generate-matrix]
     if: ${{ needs.generate-matrix.outputs.matrix != '{"service":[]}' }}
     runs-on: ubuntu-latest
     strategy:
