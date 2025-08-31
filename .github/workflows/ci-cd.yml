@@ -87,8 +87,7 @@ jobs:
 
       - name: Build with Maven
         run: |
-          mvn -N clean install
-          mvn -pl ${{ matrix.service }} clean package -DskipTests
+          mvn clean install -DskipTests -pl ${{ matrix.service }} -am
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2

@@ -2,17 +2,11 @@
 FROM maven:3.9.9-eclipse-temurin-21 AS builder
 WORKDIR /app
 
-# Copy just the root POM first
-COPY pom.xml .
+# Copy entire project
+COPY . .
 
-# Install the parent POM
-RUN mvn -N install
-
-# Copy the rest of the source code
-COPY .. .
-
-# Build only the notification-service module
-RUN mvn -pl notification-service -am clean package -DskipTests
+# Build only the auth-service module (and its dependencies)
+RUN mvn -pl auth-service -am clean package -DskipTests
 
 # === RUNTIME STAGE ===
 FROM eclipse-temurin:21-jdk-jammy AS runner

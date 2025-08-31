@@ -2,27 +2,17 @@
 FROM maven:3.9.9-eclipse-temurin-21 AS builder
 WORKDIR /app
 
-# Copy just the root POM first
-COPY pom.xml .
+# Copy entire project
+COPY . .
 
-# Install the parent POM
-RUN mvn -N install
-
-# Copy the rest of the source code
-COPY .. .
-
-# Build only the auth-service module
+# Build only the auth-service module (and its dependencies)
 RUN mvn -pl auth-service -am clean package -DskipTests
 
 # === RUNTIME STAGE ===
 FROM eclipse-temurin:21-jdk-jammy AS runner
 WORKDIR /app
 
-# Copy only the JAR built in the previous stage
 COPY --from=builder /app/auth-service/target/auth-service-0.0.1-SNAPSHOT.jar app.jar
 
-# Expose the correct port (make sure it's set in application.properties)
 EXPOSE 8083
-
-# Run the app
 ENTRYPOINT ["java", "-jar", "app.jar"]
