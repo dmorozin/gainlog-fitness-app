@@ -94,7 +94,7 @@ jobs:
 
       - name: Run tests for ${{ matrix.service }}
         run: |
-          mvn -pl ${{ matrix.service }} -am test
+          mvn ${{ matrix.service }} test
 
   build-and-push:
     needs: [run-tests, generate-matrix]

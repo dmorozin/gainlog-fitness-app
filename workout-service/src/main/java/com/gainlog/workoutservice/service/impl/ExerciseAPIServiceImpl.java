@@ -45,7 +45,7 @@ public class ExerciseAPIServiceImpl implements ExerciseAPIService {
 
         ResponseEntity<T> response;
         try {
-            log.info("Sending request to: {}", url);
+            log.info("Sending request to:  {}", url);
             response = restTemplate.exchange(url,
                     HttpMethod.GET,
                     HttpEntity.EMPTY,
