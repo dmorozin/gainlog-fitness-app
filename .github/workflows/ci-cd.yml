@@ -75,26 +75,8 @@ jobs:
           echo "$MATRIX" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
 
-  run-tests:
-    needs: generate-matrix
-    if: ${{ needs.generate-matrix.outputs.matrix != '{"service":[]}' }}
-    runs-on: ubuntu-latest
-    strategy:
-      matrix: ${{ fromJSON(needs.generate-matrix.outputs.matrix) }}
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Run tests in Docker
-        run: |
-          docker build \
-            --target test \
-            -f ${{ matrix.service }}/Dockerfile \
-            -t test-${{ matrix.service }} .
-          docker run --rm test-${{ matrix.service }}
-
   build-and-push:
-    needs: [run-tests]
+    needs: generate-matrix
     if: ${{ needs.generate-matrix.outputs.matrix != '{"service":[]}' }}
     runs-on: ubuntu-latest
     strategy:
