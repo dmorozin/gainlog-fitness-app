@@ -21,3 +21,5 @@ security:
   jwt:
     secret-key: ${AUTH_SECURITY_JWT_SECRET_KEY:d133dec892ada8eaba7887f313d9dd11541e6c8d90413060b73039bb0b3b9aa5}
     expiration-time: ${AUTH_SECURITY_JWT_EXPIRATION_TIME:3600000}
+
+exercise_db_api_key: key
